@@ -1,13 +1,33 @@
 import express from "express";
+import productManager from "./index.js";
 import router from "./routes/productos.routes.js";
 import routerCarrito from "./routes/carrito.routes.js";
+import path from "path";
+import { engine } from "express-handlebars";
+import __dirname from "./utils.js";
 
 
-
+const productos = new productManager("productos.json")
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({extended: true}))
+
+
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars")
+app.set("views", path.resolve(__dirname + "/views"))
+app.use("/", express.static(__dirname + "/public"))
+
+
+
 app.use("/api/productos", router)
 app.use("/api/carrito", routerCarrito)
+
+
+app.get("/", async (req, res)=>{
+  let totalProductos = await productos.getProducts()
+  res.render("home", {productos: totalProductos})
+})
 
 
 app.listen(8080, () => {
