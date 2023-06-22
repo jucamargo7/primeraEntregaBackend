@@ -7,8 +7,9 @@ import path from "path";
 import { engine } from "express-handlebars";
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
+import {v4 as uuid} from "uuid"
 
-
+const creacionProducto = []
 const productos = new productManager("productos.json")
 const app = express();
 app.use(express.json());
@@ -41,6 +42,13 @@ const httpServer = app.listen(8080, () => {
 const socketSever = new Server(httpServer)
 socketSever.on("connection", socket=>{
   console.log("Nuevo cliente conectado")
+
+  socket.on("cliente:NuevoProducto", nuevaData =>{
+    const productoNuevo = ({...nuevaData, id: uuid()})
+    creacionProducto.push(productoNuevo)
+    socket.emit("server:NuevoProducto", nuevaData)
+  })
+
 })
 
 
