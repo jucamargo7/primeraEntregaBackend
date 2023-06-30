@@ -8,6 +8,9 @@ import { engine } from "express-handlebars";
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
 import {v4 as uuid} from "uuid"
+import routerProductBd from "./routes/productosbd.routes.js";
+import routerCarritoBd from "./routes/carritobd.routes.js";
+import mongoose from "mongoose";
 
 const creacionProducto = []
 const productos = new productManager("productos.json")
@@ -15,6 +18,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 
+
+const connection = mongoose.connect("mongodb+srv://juanpablo9911:Industrial.5@cluster0.glftsot.mongodb.net/?retryWrites=true&w=majority");
 
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars")
@@ -26,6 +31,8 @@ app.use("/", express.static(__dirname + "/public"))
 app.use("/api/productos", router)
 app.use("/api/carrito", routerCarrito)
 app.use("/realtimeproducts", routerViews)
+app.use("/api/productosbd", routerProductBd );
+app.use("/api/carritobd", routerCarritoBd );
 
 
 
@@ -52,40 +59,6 @@ socketSever.on("connection", socket=>{
 })
 
 
-
-// const product = new productManager("productos.json");
-
-// app.get("/producto", async (req, res) => {
-//   const usuarios = await product.getProducts();
-//   let limit = parseInt(req.query.limit) ;
-//   if (!limit) return res.send( await usuarios)
-//   let productLimit = usuarios.slice(0, limit)
-// res.send(productLimit);
-// });
-
-// app.get("/producto/:id", async (req, res) =>{
-//   const usuario = await product.getProductByID(parseInt(req.params.id))
-//   res.send(usuario)
-// })
-
-// app.post("/producto", async(req, res)=>{
-// const nuevoUsuario = req.body;
-// const usuario = await product.addProduct(nuevoUsuario)
-// res.send(usuario)
-// })
-
-// app.delete("/producto/:id", async(req, res)=>{
-// const id = parseInt(req.params.id)
-// await product.removeProductByID(id)
-// res.send("Producto eliminado")
-// })
-
-// app.put("/producto/:id", async (req, res) => {
-// const id = parseInt(req.params.id);
-// const newData = req.body;
-// await product.updateProductByID(id, newData);
-// res.send("Producto actualizado");
-// })
 
 
 
