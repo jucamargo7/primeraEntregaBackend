@@ -35,6 +35,16 @@ routerProductBd.delete("/:id", async (req, res) =>{
     let producto = await productManager.deleteProductById(id)
     res.json({status:"success",payload: producto})
 })
+routerProductBd.get("/productos", async (req, res) => {
+    try {
+      const { limit, page, sort, query } = req.query;
+      const result = await productoManager.getProducts(limit, page, sort, query);
+      res.json(result);
+    } catch (error) {
+      console.error("Error al obtener los productos:", error);
+      res.status(500).json({ error: "Error al obtener los productos" });
+    }
+});
 
 
 export default routerProductBd

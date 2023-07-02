@@ -25,7 +25,46 @@ export default class CarritoBd {
           throw error;
         }
       };
-      
-
+    eliminarProducto = async (carritoId, productoId) => {
+        try {
+          const carrito = await carritoModel.findById(carritoId);
+          if (!carrito) {
+            throw new Error("Carrito no encontrado");
+          }
+          const index = carrito.productos.findIndex(
+            (producto) => producto._id.toString() === productoId
+          );
+          if (index === -1) {
+            throw new Error("Producto no encontrado en el carrito");
+          }
+          carrito.productos.splice(index, 1);
+          await carrito.save();
+          return carrito.toObject();
+        } catch (error) {
+          throw error;
+        }
+      };
+    getCarritoById = async (id) => {
+        const carrito = await carritoModel.findById(id);
+        return carrito ? carrito.toObject() : null;
+    };
+    eliminarTodosLosProductos = async (carrito) => {
+        carrito.productos = [];
+        await carritoModel.findByIdAndUpdate(carrito._id, carrito);
+    };
+    updateCarrito = async (carrito) => {
+        try {
+          const carritoActualizado = await carritoModel.findByIdAndUpdate(
+            carrito._id,
+            carrito,
+            { new: true }
+          );
+    
+          return carritoActualizado;
+        } catch (error) {
+          console.error("Error al actualizar el carrito:", error);
+          throw error;
+        }
+    }
 
 }

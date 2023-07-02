@@ -39,4 +39,5 @@ router.put("/:id", async (req, res) => {
   res.send("Producto actualizado");
 })
 
+
 export default router;
