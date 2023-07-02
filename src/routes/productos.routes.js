@@ -1,7 +1,7 @@
 import express from 'express';
 const { Router } = express;
 
-import productManager from "../index.js";
+import productManager from "../persistencia/index.js";
 
 const router = Router();
 

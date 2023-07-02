@@ -1,5 +1,5 @@
 import express from "express";
-import productManager from "./index.js";
+import productManager from "./persistencia/index.js";
 import router from "./routes/productos.routes.js";
 import routerCarrito from "./routes/carrito.routes.js";
 import routerViews from "./routes/views.router.js";
@@ -11,6 +11,10 @@ import {v4 as uuid} from "uuid"
 import routerProductBd from "./routes/productosbd.routes.js";
 import routerCarritoBd from "./routes/carritobd.routes.js";
 import mongoose from "mongoose";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import routerSession from "./routes/sessions.router.js";
+
 
 const creacionProducto = []
 const productos = new productManager("productos.json")
@@ -21,6 +25,17 @@ app.use(express.urlencoded({extended: true}))
 
 const connection = mongoose.connect("mongodb+srv://juanpablo9911:Industrial.5@cluster0.glftsot.mongodb.net/?retryWrites=true&w=majority");
 
+app.use(session({
+  store: MongoStore.create({
+    mongoUrl : "mongodb+srv://juanpablo9911:Industrial.5@cluster0.glftsot.mongodb.net/?retryWrites=true&w=majority",
+    ttl: 3600,
+  }),
+  secret: "Proy3ctoBack",
+  resave: false,
+  saveUninitialized: false,
+}))
+
+
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars")
 app.set("views", path.resolve(__dirname + "/views"))
@@ -30,9 +45,10 @@ app.use("/", express.static(__dirname + "/public"))
 
 app.use("/api/productos", router)
 app.use("/api/carrito", routerCarrito)
-app.use("/realtimeproducts", routerViews)
+app.use("/", routerViews)
 app.use("/api/productosbd", routerProductBd );
 app.use("/api/carritobd", routerCarritoBd );
+app.use("/api/sessions", routerSession)
 
 
 
