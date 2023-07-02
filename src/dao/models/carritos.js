@@ -9,7 +9,7 @@ const carritoSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "products"
             }
-        }]
+        }], default: [],
     }
 })
 
