@@ -14,6 +14,8 @@ import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import routerSession from "./routes/sessions.router.js";
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 
 
 const creacionProducto = []
@@ -34,6 +36,10 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 }))
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 app.engine("handlebars", engine());
