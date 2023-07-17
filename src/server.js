@@ -1,28 +1,25 @@
 import express from "express";
 import productManager from "./persistencia/index.js";
-import router from "./routes/productos.routes.js";
-import routerCarrito from "./routes/carrito.routes.js";
-import routerViews from "./routes/views.router.js";
 import path from "path";
 import { engine } from "express-handlebars";
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
 import {v4 as uuid} from "uuid"
-import routerProductBd from "./routes/productosbd.routes.js";
-import routerCarritoBd from "./routes/carritobd.routes.js";
 import mongoose from "mongoose";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import routerSession from "./routes/sessions.router.js";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
+import indexRouter from "./routes/index.routes.js";
+import config from "./config/config.js";
 
-
+const puertoUnico = config.PORT;
 const creacionProducto = []
 const productos = new productManager("productos.json")
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
+
 
 
 const connection = mongoose.connect("mongodb+srv://juanpablo9911:Industrial.5@cluster0.glftsot.mongodb.net/?retryWrites=true&w=majority");
@@ -47,15 +44,9 @@ app.set("view engine", "handlebars")
 app.set("views", path.resolve(__dirname + "/views"))
 app.use("/", express.static(__dirname + "/public"))
 
+// Capa de ruteo
 
-
-app.use("/api/productos", router)
-app.use("/api/carrito", routerCarrito)
-app.use("/", routerViews)
-app.use("/api/productosbd", routerProductBd );
-app.use("/api/carritobd", routerCarritoBd );
-app.use("/api/sessions", routerSession)
-
+app.use("/", indexRouter)
 
 
 app.get("/", async (req, res)=>{
@@ -64,7 +55,7 @@ app.get("/", async (req, res)=>{
 })
 
 
-const httpServer = app.listen(8080, () => {
+const httpServer = app.listen(puertoUnico, () => {
   console.log("Levántate por favor");
 });
 
