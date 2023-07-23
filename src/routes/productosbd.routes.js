@@ -1,5 +1,6 @@
 import { Router } from "express";
 import ProductoBd from "../dao/dbManagers/productos.js";
+import { chequeoUsuario } from "../config/passport.config.js";
 
 
 const productManager = new ProductoBd()
@@ -10,7 +11,7 @@ routerProductBd.get("/", async (req, res) =>{
     let productos = await productManager.getAll()
     res.json({status: "success", payload : productos})
 })
-routerProductBd.post("/", async(req,res)=>{
+routerProductBd.post("/",chequeoUsuario ("admin"), async(req,res)=>{
     const {title, description,code,price,status,stock,category} = req.body
     let nuevoProducto = await productManager.createProduct({
        title,
@@ -30,7 +31,7 @@ routerProductBd.get("/:id", async (req, res) =>{
     res.json({status:"success",payload: producto})
 })
 
-routerProductBd.delete("/:id", async (req, res) =>{
+routerProductBd.delete("/:id", chequeoUsuario ("admin"), async (req, res) =>{
     let id =req.params.id
     let producto = await productManager.deleteProductById(id)
     res.json({status:"success",payload: producto})

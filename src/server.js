@@ -1,8 +1,8 @@
 import express from "express";
 import productManager from "./persistencia/index.js";
 import path from "path";
-import { engine } from "express-handlebars";
 import __dirname from "./utils.js";
+import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import {v4 as uuid} from "uuid"
 import mongoose from "mongoose";
@@ -13,7 +13,9 @@ import initializePassport from "./config/passport.config.js";
 import indexRouter from "./routes/index.routes.js";
 import config from "./config/config.js";
 
-const puertoUnico = config.PORT;
+
+
+
 const creacionProducto = []
 const productos = new productManager("productos.json")
 const app = express();
@@ -34,6 +36,8 @@ app.use(session({
   saveUninitialized: false,
 }))
 
+
+
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
@@ -44,7 +48,7 @@ app.set("view engine", "handlebars")
 app.set("views", path.resolve(__dirname + "/views"))
 app.use("/", express.static(__dirname + "/public"))
 
-// Capa de ruteo
+
 
 app.use("/", indexRouter)
 
@@ -55,9 +59,12 @@ app.get("/", async (req, res)=>{
 })
 
 
-const httpServer = app.listen(puertoUnico, () => {
+const httpServer = app.listen(8080, () => {
   console.log("Levántate por favor");
 });
+
+
+
 
 const socketSever = new Server(httpServer)
 socketSever.on("connection", socket=>{

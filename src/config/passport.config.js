@@ -8,9 +8,9 @@ const localStrategy = local.Strategy
 const initializePassport = () =>{
     passport.use("registrer", new localStrategy(
         {passReqToCallback: true, usernameField: "email"}, async (req, username, password, done) =>{
-            const {first_name, last_name, email} = req.body
+            const {first_name, last_name, email,role} = req.body
             try{
-                let user = await userModel.findOne({email, username})
+                let user = await userModel.findOne({email: username})
                 if (user){
                     console.log("El usuario ya existe")
                     return done (null, false)
@@ -19,7 +19,8 @@ const initializePassport = () =>{
                     first_name,
                     last_name,
                     email,
-                    password: createHash(password)
+                    password: createHash(password),
+                    role
                 }
                 let result = await userModel.create(newUser)
                 return done (null, result)
@@ -45,15 +46,31 @@ const initializePassport = () =>{
         } 
     ))
 
+   
+
     passport.serializeUser((user, done) => {
         done(null, user._id)
     })
     
-    passport.deserializeUser(async(id, done) => {
-        const user = userModel.findById(id)
-        done(null, user)
-    })
+    passport.deserializeUser(async (id, done) => {
+        try {
+            const user = await userModel.findById(id); // Agrega await aquí
+            done(null, user);
+        } catch (err) {
+            done(err);
+        }
+    });
 
 }
+
+const chequeoUsuario = (rol) => (req, res, next) => {
+    if (req.isAuthenticated() && req.session.user.rol === rol) {
+      return next();
+    } else {
+      return res.send("Acceso denegado");
+    }
+  };
+
+export {chequeoUsuario};
 
 export default initializePassport
