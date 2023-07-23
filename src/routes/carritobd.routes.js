@@ -69,5 +69,28 @@ routerCarritoBd.put("/carritos/:idc/productos/:idp", async (req, res) => {
       res.status(500).json({ error: "Error al actualizar el producto del carrito" });
     }
   });
+  routerCarritoBd.post("/:cid/purchase", async (req, res) => {
+    try {
+      const { cid } = req.params;
+      const { email } = req.body;
+  
+      const result = await carritoManager.finalizarCompra(cid, email);
+  
+      if (result.status === "success") {
+        res.json({ status: "success", message: "Compra finalizada correctamente" });
+      } else if (result.status === "incomplete") {
+        res.json({
+          status: "incomplete",
+          message: "Algunos productos no tienen suficiente stock para completar la compra",
+          productsNotProcessed: result.productsNotProcessed,
+        });
+      } else {
+        res.status(500).json({ error: "Error al finalizar la compra" });
+      }
+    } catch (error) {
+      console.error("Error al finalizar la compra:", error);
+      res.status(500).json({ error: "Error al finalizar la compra" });
+    }
+  });
   
 export default routerCarritoBd

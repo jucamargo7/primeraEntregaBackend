@@ -1,4 +1,6 @@
 import { carritoModel } from "../models/carritos.js"
+import { productModel } from "../models/productos.js"
+import ticketModel from "../models/ticket.js"
 
 
 export default class CarritoBd {
@@ -66,5 +68,46 @@ export default class CarritoBd {
           throw error;
         }
     }
+    finalizarCompra = async (carritoId, email) => {
+      try {
+        const carrito = await carritoModel.findById(carritoId).populate("productos");
+  
+        const productsNotProcessed = [];
+  
+        for (const item of carrito.productos) {
+          const product = await productModel.findById(item._id);
+  
+          const total = product.price * item.incart;
+  
+          if (product.stock >= item.incart) {
+            product.stock -= item.incart;
+            await product.save();
+          } else {
+            productsNotProcessed.push(item._id);
+          }
+        }
+  
+        if (productsNotProcessed.length > 0) {
+          return { status: "incomplete", productsNotProcessed };
+        }
+  
+        const ticketData = {
+          code: "TICKET_" + Date.now(),
+          purchase_datetime: new Date(),
+          amount: carrito.productos.reduce((total, item) => {
+            const product =  productModel.findById(item._id);
+            return total + product.price * item.incart;
+          }, 0),
+          purchaser: email,
+        };
+  
+        await ticketModel.create(ticketData);
+  
+        return { status: "success" };
+      } catch (error) {
+        console.error("Error al finalizar la compra:", error);
+        throw error;
+      }
+    };
 
 }
