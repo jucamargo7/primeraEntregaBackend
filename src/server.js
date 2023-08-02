@@ -1,7 +1,7 @@
 import express from "express";
 import productManager from "./persistencia/index.js";
 import path from "path";
-import __dirname from "./utils.js";
+import __dirname from "./utils/utils.js";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import {v4 as uuid} from "uuid"
@@ -17,7 +17,7 @@ import config from "./config/config.js";
 
 
 const creacionProducto = []
-const productos = new productManager("productos.json")
+const productos = new productManager("./persistencia/productos.json")
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
@@ -53,9 +53,9 @@ app.use("/", express.static(__dirname + "/public"))
 app.use("/", indexRouter)
 
 
-app.get("/", async (req, res)=>{
+app.get("/real", async (req, res)=>{
   let totalProductos = await productos.getProducts()
-  res.render("home", {productos: totalProductos})
+  res.render("home",{productos: totalProductos})
 })
 
 
