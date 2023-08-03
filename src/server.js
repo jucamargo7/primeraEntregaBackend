@@ -1,7 +1,7 @@
 import express from "express";
 import productManager from "./persistencia/index.js";
 import path from "path";
-import __dirname from "./utils/utils.js";
+import __dirname from "./utils.js";
 import { engine } from "express-handlebars";
 import { Server } from "socket.io";
 import {v4 as uuid} from "uuid"
@@ -12,6 +12,7 @@ import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import indexRouter from "./routes/index.routes.js";
 import config from "./config/config.js";
+import errorHandler from "./middlewars/index.js"
 
 
 
@@ -51,6 +52,7 @@ app.use("/", express.static(__dirname + "/public"))
 
 
 app.use("/", indexRouter)
+app.use(errorHandler)
 
 
 app.get("/real", async (req, res)=>{

@@ -1,6 +1,9 @@
 import { Router } from "express";
 import ProductoBd from "../dao/dbManagers/productos.js";
 import { chequeoUsuario } from "../config/passport.config.js";
+import generateUserErrorInfo from "../utils/errors/Info.errors.js";
+import EnumErrors from "../utils/errors/Enum.errors.js";
+import CustomErrors from "../utils/errors/Custom.errors.js";
 
 
 const productManager = new ProductoBd()
@@ -13,6 +16,14 @@ routerProductBd.get("/", async (req, res) =>{
 })
 routerProductBd.post("/",chequeoUsuario ("admin"), async(req,res)=>{
     const {title, description,code,price,status,stock,category} = req.body
+    if (!title||!description || !code || !price || !stock || !category) {
+        CustomErrors.createError({
+        name: "error en la creacion del producto",
+        cause: generateUserErrorInfo({ first_name, last_name, email }),
+        message: "No se cumple con las espicificaciones del Schema ",
+        code: EnumErrors.INVALID_TYPES_ERROR,
+    })
+    }   
     let nuevoProducto = await productManager.createProduct({
        title,
        description,
