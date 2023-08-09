@@ -13,6 +13,7 @@ import initializePassport from "./config/passport.config.js";
 import indexRouter from "./routes/index.routes.js";
 import config from "./config/config.js";
 import errorHandler from "./middlewars/index.js"
+import { addLogger, logger } from "./utils/logger.js";
 
 
 
@@ -22,6 +23,7 @@ const productos = new productManager("./persistencia/productos.json")
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
+app.use(addLogger)
 
 
 
@@ -62,7 +64,7 @@ app.get("/real", async (req, res)=>{
 
 
 const httpServer = app.listen(8080, () => {
-  console.log("Levántate por favor");
+  console.info("Levántate por favor");
 });
 
 
@@ -70,7 +72,7 @@ const httpServer = app.listen(8080, () => {
 
 const socketSever = new Server(httpServer)
 socketSever.on("connection", socket=>{
-  console.log("Nuevo cliente conectado")
+  console.info("Nuevo cliente conectado")
 
   socket.on("cliente:NuevoProducto", nuevaData =>{
     const productoNuevo = ({...nuevaData, id: uuid()})

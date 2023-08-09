@@ -1,19 +1,35 @@
 import { Router } from "express";
 import CarritoBd from "../dao/dbManagers/carritos.js";
+import { addLogger, logger } from "../utils/logger.js"
+
 
 const carritoManager = new CarritoBd()
 const routerCarritoBd = Router()
 
-routerCarritoBd.get("/", async(req,res)=>{
-    let carritos = await carritoManager.getAllCarritos()
-    res.json({statusL:"success", payload: carritos})
-}) 
+routerCarritoBd.use(addLogger);
 
-routerCarritoBd.post("/",async(req,res)=>{
-    const {product}=req.body
-    let nuevoCarrito = await carritoManager.createCarrito({product})
-    res.json({statusL:"success", payload: nuevoCarrito})
- })
+routerCarritoBd.get("/", async (req, res) => {
+  try {
+      req.logger.info("Obteniendo todos los carritos");
+      let carritos = await carritoManager.getAllCarritos();
+      res.json({ status: "success", payload: carritos });
+  } catch (error) {
+      req.logger.error("Error al obtener carritos:", error);
+      res.status(500).json({ error: "Error al obtener carritos" });
+  }
+});
+
+routerCarritoBd.post("/", async (req, res) => {
+  try {
+      req.logger.info("Creando un nuevo carrito");
+      const { product } = req.body;
+      let nuevoCarrito = await carritoManager.createCarrito({ product });
+      res.json({ status: "success", payload: nuevoCarrito });
+  } catch (error) {
+      req.logger.error("Error al crear un nuevo carrito:", error);
+      res.status(500).json({ error: "Error al crear un nuevo carrito" });
+  }
+});
 
 routerCarritoBd.post("/carritos/:idc/productos/:idp", async (req, res) => {
     try {
