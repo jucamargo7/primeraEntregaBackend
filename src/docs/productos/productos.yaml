@@ -1,0 +1,79 @@
+openapi: "3.1.0"
+info:
+  title: API de Productos
+  version: "1.0"
+paths:
+  /api/productosbd:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Productos
+      responses:
+        "200":
+          description: Lista de productos obtenida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/productos"
+    post:
+      summary: Crea un nuevo producto
+      tags:
+        - Productos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/productos"
+      responses:
+        "200":
+          description: Producto creado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/productos"
+  /api/productosbd/{id}:
+    delete:
+      summary: Elimina un producto por ID
+      tags:
+        - Productos
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del producto que se quiere eliminar
+      responses:
+        "200":
+          description: Producto eliminado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/productos"
+
+components:
+  schemas:
+    productos:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del producto
+        title:
+          type: string
+          description: Título del producto
+        description:
+          type: string
+          description: Descripción del producto
+        category:
+          type: string
+          description: Categoría del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Stock del producto

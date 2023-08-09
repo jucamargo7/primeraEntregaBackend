@@ -1,0 +1,50 @@
+openapi: "3.1.0"
+info:
+  title: API de Carrito
+  version: "1.0"
+paths:
+  /api/carritobd:
+    get:
+      summary: Obtiene todos los carritos
+      tags:
+        - Carrito
+      responses:
+        "200":
+          description: Lista de carritos obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/carrito"
+    post:
+      summary: Crea un nuevo carro
+      tags:
+        - Carrito
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/carrito"
+      responses:
+        "201":
+          description: Carrito creado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/carrito"
+
+
+components:
+  schemas:
+    carrito:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del carrito
+        products:
+          type: array
+          items:
+            $ref: "#/components/schemas/productos"          
