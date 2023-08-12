@@ -5,7 +5,8 @@
   "description": "",
   "main": "productManager.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test1": "mocha src/test/product.test.js",
+    "test2": "mocha src/test/cart.test.js"
   },
   "keywords": [],
   "author": "",
@@ -28,5 +29,10 @@
     "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.0",
     "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.7",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }

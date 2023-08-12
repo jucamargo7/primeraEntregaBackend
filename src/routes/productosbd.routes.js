@@ -24,7 +24,7 @@ routerProductBd.get("/", async (req, res) => {
     }
 });
 
-routerProductBd.post("/",chequeoUsuario ("admin"), async(req,res)=>{
+routerProductBd.post("/", async(req,res)=>{
     const {title, description,code,price,status,stock,category} = req.body
     if (!title||!description || !code || !price || !stock || !category) {
         CustomErrors.createError({
@@ -43,7 +43,7 @@ routerProductBd.post("/",chequeoUsuario ("admin"), async(req,res)=>{
        stock,
        category
     })
-    res.json({status:"success", payload: nuevoProducto})
+    res.json({result:"success", payload: nuevoProducto})
 }) 
 
 routerProductBd.get("/:id", async (req, res) =>{
