@@ -9,7 +9,8 @@ const productSchema = new mongoose.Schema({
     price : Number,
     status: Boolean,
     stock : Number,
-    category : String
+    category : String,
+    owner: {type: String, default: "admin"}
 })
 
 export const productModel = mongoose.model(productCollection, productSchema)
