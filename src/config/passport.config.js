@@ -2,7 +2,10 @@ import passport from "passport";
 import local from "passport-local"
 import userModel from "../dao/models/users.js";
 import { createHash, isValidPassword } from "../utils.js";
+import CarritoBd from "../dao/dbManagers/carritos.js";
 
+
+const carritoManager = new CarritoBd()
 const localStrategy = local.Strategy
 
 const initializePassport = () =>{
@@ -39,6 +42,11 @@ const initializePassport = () =>{
                 done(null, false)
             }
             if(!isValidPassword(user, password)) return done(null, false)
+            if (!user.carrito){
+                const car = await carritoManager.createCarrito()
+                user.carrito = car._id
+                await user.save()
+            }
             done(null, user)
             } catch(err) {
                 return done(err)

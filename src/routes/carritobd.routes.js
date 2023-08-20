@@ -31,9 +31,27 @@ routerCarritoBd.post("/", async (req, res) => {
   }
 });
 
+routerCarritoBd.get("/:id", async (req, res) => {
+  const carritoId = req.params.id;
+
+  try {
+      req.logger.info(`Obteniendo carrito con ID: ${carritoId}`);
+      const carrito = await carritoManager.getCarritoById(carritoId);
+
+      if (carrito) {
+          res.json({ status: "success", payload: carrito });
+      } else {
+          res.status(404).json({ error: "Carrito no encontrado" });
+      }
+  } catch (error) {
+      req.logger.error("Error al obtener el carrito:", error);
+      res.status(500).json({ error: "Error al obtener el carrito" });
+  }
+});
+
 routerCarritoBd.post("/carritos/:idc/productos/:idp", async (req, res) => {
     try {
-      const { idc, idp } = req.body;
+      const { idc, idp } = req.params;
       const carritoActualizado = await carritoManager.ingresarProducto(idc, idp);
       res.json(carritoActualizado);
     } catch (error) {
@@ -104,7 +122,7 @@ routerCarritoBd.put("/carritos/:idc/productos/:idp", async (req, res) => {
         res.status(500).json({ error: "Error al finalizar la compra" });
       }
     } catch (error) {
-      console.error("Error al finalizar la compra:", error);
+      logger.fatal("Error al finalizar la compra:", error);
       res.status(500).json({ error: "Error al finalizar la compra" });
     }
   });

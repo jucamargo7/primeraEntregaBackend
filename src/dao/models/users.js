@@ -9,7 +9,8 @@ const Documents = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema({
     first_name: String, 
-    last_name: String, 
+    last_name: String,
+    carrito: {type: mongoose.Schema.Types.ObjectId, ref:"carrito"}, 
     email: String,
     password: String,
     rol:{type: String, default:"user"},

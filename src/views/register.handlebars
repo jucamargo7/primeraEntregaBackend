@@ -1,22 +1,44 @@
-<div>
-    <h1>Regístrate</h1>
-    <form id="formularioRegistro" >
-        <label>Nombre</label>
-        <input name="first_name">
-        <label>Apellido</label>
-        <input name="last_name">
-        <label>Email</label>
-        <input name="email">
-        <label>Contraseña</label>
-        <input type="password" name="password">
-        <label for="">Roles</label>
-         <select name="rol" id="rol">
-            <option value="user">Usuario</option>
-            <option value="admin">Administrador</option>
-            <option value="premium">Premium</option>
-        </select>
-        <input type="submit">
+<div class="container">
+    <h1 class="mb-4">Regístrate</h1>
+    <form id="formularioRegistro" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="first_name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="first_name" required>
+            <div class="invalid-feedback">
+                Por favor ingresa tu nombre.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="last_name" class="form-label">Apellido</label>
+            <input type="text" class="form-control" name="last_name" required>
+            <div class="invalid-feedback">
+                Por favor ingresa tu apellido.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" required>
+            <div class="invalid-feedback">
+                Por favor ingresa un email válido.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" name="password" required>
+            <div class="invalid-feedback">
+                Por favor ingresa una contraseña.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="rol" class="form-label">Roles</label>
+            <select class="form-select" name="rol" id="rol">
+                <option value="user">Usuario</option>
+                <option value="admin">Administrador</option>
+                <option value="premium">Premium</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Registrarse</button>
     </form>
 </div>
-
 <script src="/js/register.js"></script>
+

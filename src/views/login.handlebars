@@ -1,12 +1,23 @@
-<div>
-    <h1>Loguearse</h1>
-    <form id="loginFormulario" >
-        <label>Email</label>
-        <input name="email">
-        <label>Contraseña</label>
-        <input type="password" name="password">
-        <input type="submit">
+<div class="container">
+    <h1 class="mb-4">Iniciar Sesión</h1>
+    <form id="loginFormulario" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" required>
+            <div class="invalid-feedback">
+                Por favor ingresa un email válido.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" name="password" required>
+            <div class="invalid-feedback">
+                Por favor ingresa una contraseña.
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Iniciar Sesión</button>
     </form>
 </div>
-
 <script src="/js/login.js"></script>
+
+

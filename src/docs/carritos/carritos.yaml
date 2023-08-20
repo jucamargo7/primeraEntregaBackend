@@ -10,7 +10,7 @@ paths:
         - Carrito
       responses:
         "200":
-          description: Lista de carritos obtenida correctamente
+          description: Obteniendo todos los carritos
           content:
             application/json:
               schema:
@@ -29,11 +29,158 @@ paths:
               $ref: "#/components/schemas/carrito"
       responses:
         "201":
-          description: Carrito creado correctamente
+          description: Creando un nuevo carrito
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/carrito"
+  /api/carritobd/{id}:
+    get:
+      summary: Obtiene un carrito por su ID
+      tags:
+        - Carrito
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del carrito que se quiere obtener
+      responses:
+        "200":
+          description: Obteniendo carrito con ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/carrito"
+  /api/carritobd/{idc}/productos/{idp}:
+    post:
+      summary: Añade un nuevo producto al carrito
+      tags:
+        - Carrito
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del carrito al que se quiere agregar el producto
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+          description: ID del producto que se quiere agregar al carrito  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/carrito"
+      responses:
+        "201":
+          description: Carrito actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/carrito"   
+    delete:
+      summary: Elimina un producto del carrito
+      tags:
+        - Carrito
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del carrito al que se quiere eliminar un producto
+        - in: path
+          name: pid
+          schema:
+            type: string
+          required: true
+          description: ID del producto que se quiere eliminar del carrito  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/carrito"
+      responses:
+        "201":
+          description: Carrito actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/carrito"
+    put:
+      summary: Actualiza la cantidad de un producto en el carrito
+      tags:
+        - Carrito
+      parameters:
+        - in: path
+          name: idc
+          schema:
+            type: string
+          required: true
+          description: ID del carrito al que se quiere actualizar la cantidad del producto
+        - in: path
+          name: idp
+          schema:
+            type: string
+          required: true
+          description: ID del producto del cual se quiere actualizar la cantidad en el carrito
+      requestBody:
+        required: true
+        content:
+          application/json:
+          schema:
+            type: object
+          properties:
+            cantidad:
+              type: integer
+              description: Nueva cantidad del producto en el carrito
+          required:
+            - cantidad
+      responses:
+        "201":
+          description: Cantidad de producto actualizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/carrito"
+  /api/carritobd/{cid}/purchase:
+    post:
+      summary: Finaliza una compra en un carrito
+      tags:
+        - Carrito
+      parameters:
+        - in: path
+          name: cid
+          schema:
+            type: string
+          required: true
+          description: ID del carrito al que se quiere finalizar la compra
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Correo electrónico del comprador
+              required:
+                - email
+      responses:
+       "200":
+          description: Compra finalizada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/productos"
 
 
 components:
@@ -47,4 +194,25 @@ components:
         products:
           type: array
           items:
-            $ref: "#/components/schemas/productos"          
+            $ref: "#/components/schemas/productos"   
+    productos:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID del producto
+        title:
+          type: string
+          description: Título del producto
+        description:
+          type: string
+          description: Descripción del producto
+        category:
+          type: string
+          description: Categoría del producto
+        price:
+          type: number
+          description: Precio del producto
+        stock:
+          type: number
+          description: Cantidad en stock del producto   

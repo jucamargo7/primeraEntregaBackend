@@ -15,6 +15,6 @@ form.addEventListener('submit', async (event) => {
   const responseData = await response.json();
   console.log(responseData);
   if (response.ok) {
-    window.location.href = '/productosbd';
+    window.location.href = '/productos';
 }
 });

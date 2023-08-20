@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/css/stylecarrito.css">
+</head>
+<body>  
+    <div class="container">
+        <h1>Tu Carrito de Compras</h1>
+        <div class="cart-items">
+            {{#each carrito}}
+            <div class="cart-item">
+                <p><strong>ID:</strong> {{this._id}}</p>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <script src="/js/carritobd.js"></script>
+</body>
+</html>
+
+
+
+
+

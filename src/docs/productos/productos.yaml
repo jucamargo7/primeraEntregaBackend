@@ -10,7 +10,7 @@ paths:
         - Productos
       responses:
         "200":
-          description: Lista de productos obtenida
+          description: Obteniendo todos los productos
           content:
             application/json:
               schema:
@@ -53,6 +53,25 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/productos"
+    get:
+      summary: Obtiene el producto por ID
+      tags:
+        - Productos
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID del producto que se quiere obtener
+      responses:
+        "200":
+          description: Producto obtenido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/productos"
+  
 
 components:
   schemas:
