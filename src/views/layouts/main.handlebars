@@ -9,7 +9,12 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
+    {{#if isLoginIn}}
+    <a href="/api/sessions/logout">logout</a>
+    {{/if}}
     {{{body}}}
+
 </body>
 </html>

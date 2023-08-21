@@ -10,3 +10,4 @@ function continuarCompra(){
     window.location.href = '/carrito';
 }
 
+

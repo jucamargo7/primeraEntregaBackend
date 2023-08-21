@@ -1,10 +1,11 @@
 const { Router } = express;
-import express from 'express';
+import express, { request } from 'express';
 import ProductoBd from "../dao/dbManagers/productos.js";
-
+import CarritoBd from '../dao/dbManagers/carritos.js';
 
 const productoView = new ProductoBd()
 const routerViews = Router();
+const carritoManager = new CarritoBd()
 
 routerViews.get("/realtimeproducts", (req, res) =>{
     res.render("realTimeProducts", {});
@@ -44,7 +45,14 @@ routerViews.get('/profile',(req,res)=>{
 })
 
 routerViews.get('/carrito', async (req, res) => {
-    res.render('carritobd')
+    const carritoId = req.user.carrito
+    const productos = await carritoManager.getCarritoById(carritoId)
+    let total = 0
+    productos.forEach(p=>{
+        total += p.price*p.cantidad
+    })
+
+    res.render('carritobd', {productos, total, carritoId} )
 });
 
 

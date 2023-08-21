@@ -16,7 +16,9 @@ import errorHandler from "./middlewars/index.js"
 import { addLogger, logger } from "./utils/logger.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
-
+import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access";
+import handlebars from "express-handlebars";
+import Handlebars from "handlebars";
 
 const creacionProducto = []
 const productos = new productManager("./persistencia/productos.json")
@@ -24,6 +26,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 app.use(addLogger)
+
 
 
 const swaggerOption = {
@@ -54,12 +57,19 @@ app.use(session({
 
 
 
+
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
+app.use((req,res,next)=>{
+  res.locals.isLoginIn = req.isAuthenticated()
+  next()
+})
 
 
-app.engine("handlebars", engine());
+app.engine("handlebars", engine({
+  handlebars: allowInsecurePrototypeAccess(Handlebars)
+}));
 app.set("view engine", "handlebars")
 app.set("views", path.resolve(__dirname + "/views"))
 app.use("/", express.static(__dirname + "/public"))

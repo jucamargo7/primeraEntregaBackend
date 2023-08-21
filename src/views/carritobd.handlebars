@@ -7,13 +7,22 @@
     <div class="container">
         <h1>Tu Carrito de Compras</h1>
         <div class="cart-items">
-            {{#each carrito}}
+            {{#each productos}}
             <div class="cart-item">
-                <p><strong>ID:</strong> {{this._id}}</p>
+                <p><strong>Titulo:</strong> {{title}}</p>
+                <p><strong>Descripción:</strong> {{description}}</p>
+                <p><strong>Codigo:</strong> {{code}}</p>
+                <p><strong>Precio:</strong> {{price}}</p>
+                <p><strong>Categoria:</strong> {{category}}</p>
+                <p><strong>Cantidad:</strong> {{cantidad}}</p>
             </div>
+            <hr>
             {{/each}}
+            <span>Total: {{total}}</span>
         </div>
+        <button onclick="purcharse()">Finalizar compra</button>
     </div>
+    <input id="idCarrito" type="hidden" value="{{carritoId}}">
     <script src="/js/carritobd.js"></script>
 </body>
 </html>

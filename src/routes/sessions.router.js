@@ -25,6 +25,11 @@ routerSession.post('/login', passport.authenticate("login", {failureRedirect: "/
     res.send({status: "success", payload: req.user})
 })
 
+routerSession.get('/logout', (req, res) => {
+    req.session.destroy(); 
+    res.redirect('/login'); 
+});
+
 export default routerSession;
 
 
