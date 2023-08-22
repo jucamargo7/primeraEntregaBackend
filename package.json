@@ -1,6 +1,9 @@
 {
   "name": "entregaunobackend",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=16"
+  },
   "type": "module",
   "description": "",
   "main": "productManager.js",
